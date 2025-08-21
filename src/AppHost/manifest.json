@@ -1,0 +1,299 @@
+{
+  "$schema": "https://json.schemastore.org/aspire-8.0.json",
+  "resources": {
+    "redis": {
+      "type": "container.v0",
+      "connectionString": "{redis.bindings.tcp.host}:{redis.bindings.tcp.port},password={redis-password.value}",
+      "image": "docker.io/library/redis:7.4",
+      "entrypoint": "/bin/sh",
+      "args": [
+        "-c",
+        "redis-server --requirepass $REDIS_PASSWORD"
+      ],
+      "env": {
+        "REDIS_PASSWORD": "{redis-password.value}"
+      },
+      "bindings": {
+        "tcp": {
+          "scheme": "tcp",
+          "protocol": "tcp",
+          "transport": "tcp",
+          "targetPort": 6379
+        }
+      }
+    },
+    "discord-app-id": {
+      "type": "parameter.v0",
+      "value": "{discord-app-id.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "discord-app-secret": {
+      "type": "parameter.v0",
+      "value": "{discord-app-secret.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true
+        }
+      }
+    },
+    "discord-role-id": {
+      "type": "parameter.v0",
+      "value": "{discord-role-id.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "discord-guild-id": {
+      "type": "parameter.v0",
+      "value": "{discord-guild-id.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "discord-invite-url": {
+      "type": "parameter.v0",
+      "value": "{discord-invite-url.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "cosmos-connection-string": {
+      "type": "parameter.v0",
+      "value": "{cosmos-connection-string.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true
+        }
+      }
+    },
+    "cosmos-database-name": {
+      "type": "parameter.v0",
+      "value": "{cosmos-database-name.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "cosmos-container-name": {
+      "type": "parameter.v0",
+      "value": "{cosmos-container-name.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "cloudflare-tunnel-token": {
+      "type": "parameter.v0",
+      "value": "{cloudflare-tunnel-token.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true
+        }
+      }
+    },
+    "cloudflare-tunnel-id": {
+      "type": "parameter.v0",
+      "value": "{cloudflare-tunnel-id.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "discord-bot-token": {
+      "type": "parameter.v0",
+      "value": "{discord-bot-token.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true
+        }
+      }
+    },
+    "discord-mod-forum-channel-id": {
+      "type": "parameter.v0",
+      "value": "{discord-mod-forum-channel-id.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "discord-notification-channel-id": {
+      "type": "parameter.v0",
+      "value": "{discord-notification-channel-id.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "discord-update-channel-id": {
+      "type": "parameter.v0",
+      "value": "{discord-update-channel-id.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true
+        }
+      }
+    },
+    "backend": {
+      "type": "project.v0",
+      "path": "../Backend/Backend.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{backend.bindings.http.targetPort}",
+        "ConnectionStrings__redis": "{redis.connectionString}",
+        "COSMOSCONNECTIONSTRING": "{cosmos-connection-string.value}",
+        "COSMOSDATABASENAME": "{cosmos-database-name.value}",
+        "COSMOSCONTAINERNAME": "{cosmos-container-name.value}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    },
+    "frontend": {
+      "type": "project.v0",
+      "path": "../Frontend/Frontend.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{frontend.bindings.http.targetPort}",
+        "services__backend__http__0": "{backend.bindings.http.url}",
+        "services__backend__https__0": "{backend.bindings.https.url}",
+        "ConnectionStrings__redis": "{redis.connectionString}",
+        "DISCORDINVITELINK": "{discord-invite-url.value}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    },
+    "dashboard": {
+      "type": "project.v0",
+      "path": "../Dashboard/Dashboard.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "ASPNETCORE_FORWARDEDHEADERS_ENABLED": "true",
+        "HTTP_PORTS": "{dashboard.bindings.http.targetPort}",
+        "services__backend__http__0": "{backend.bindings.http.url}",
+        "services__backend__https__0": "{backend.bindings.https.url}",
+        "ConnectionStrings__redis": "{redis.connectionString}",
+        "DISCORDAPPID": "{discord-app-id.value}",
+        "DISCORDAPPSECRET": "{discord-app-secret.value}",
+        "DISCORDROLEID": "{discord-role-id.value}",
+        "DISCORDGUILDID": "{discord-guild-id.value}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http"
+        },
+        "https": {
+          "scheme": "https",
+          "protocol": "tcp",
+          "transport": "http"
+        }
+      }
+    },
+    "bot": {
+      "type": "project.v0",
+      "path": "../Bot/Bot.csproj",
+      "env": {
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EXCEPTION_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_EMIT_EVENT_LOG_ATTRIBUTES": "true",
+        "OTEL_DOTNET_EXPERIMENTAL_OTLP_RETRY": "in_memory",
+        "services__backend__http__0": "{backend.bindings.http.url}",
+        "services__backend__https__0": "{backend.bindings.https.url}",
+        "ConnectionStrings__redis": "{redis.connectionString}",
+        "DISCORDBOTTOKEN": "{discord-bot-token.value}",
+        "DISCORDMODFORUMCHANNELID": "{discord-mod-forum-channel-id.value}",
+        "NOTIFICATIONCHANNELID": "{discord-notification-channel-id.value}",
+        "DISCORDUPDATECHANNELID": "{discord-update-channel-id.value}",
+        "DISCORDGUILDID": "{discord-guild-id.value}"
+      }
+    },
+    "cloudflare": {
+      "type": "container.v0",
+      "image": "cloudflare/cloudflared:latest",
+      "args": [
+        "tunnel",
+        "--no-autoupdate",
+        "--loglevel",
+        "debug",
+        "--metrics",
+        "0.0.0.0:2000",
+        "run"
+      ],
+      "env": {
+        "TUNNEL_TOKEN": "{cloudflare-tunnel-token.value}",
+        "TUNNEL_NAME": "{cloudflare-tunnel-id.value}"
+      },
+      "bindings": {
+        "http": {
+          "scheme": "http",
+          "protocol": "tcp",
+          "transport": "http",
+          "targetPort": 2000
+        }
+      }
+    },
+    "redis-password": {
+      "type": "parameter.v0",
+      "value": "{redis-password.inputs.value}",
+      "inputs": {
+        "value": {
+          "type": "string",
+          "secret": true,
+          "default": {
+            "generate": {
+              "minLength": 22,
+              "special": false
+            }
+          }
+        }
+      }
+    }
+  }
+}

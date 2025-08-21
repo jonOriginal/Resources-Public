@@ -1,0 +1,54 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Aspire.StackExchange.Redis" Version="9.3.1"/>
+        <PackageReference Include="Config.Net" Version="5.2.1"/>
+        <PackageReference Include="Discord.Net" Version="3.17.4"/>
+        <PackageReference Include="Discord.Net.Rest" Version="3.18.0-beta.3"/>
+        <PackageReference Include="Microsoft.Extensions.ApiDescription.Client" Version="10.0.0-preview.5.25277.114">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+        <PackageReference Include="NSwag.ApiDescription.Client" Version="14.4.0">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Analysers.Attributes\Analysers.Attributes.csproj"/>
+        <ProjectReference Include="..\Common\Common.csproj"/>
+        <ProjectReference Include="..\Discord.OAuth\Discord.OAuth.csproj"/>
+        <ProjectReference Include="..\Backend.Api\Backend.Api.csproj"/>
+        <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Analysers.Attributes\Analysers.Attributes.csproj"/>
+        <ProjectReference Include="..\Common\Common.csproj"/>
+        <ProjectReference Include="..\Analysers\Analysers\Analysers.csproj">
+            <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+            <OutputItemType>Analyzer</OutputItemType>
+        </ProjectReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="FluentResults">
+            <HintPath>..\..\..\..\.nuget\packages\fluentresults\4.0.0\lib\net9.0\FluentResults.dll</HintPath>
+        </Reference>
+    </ItemGroup>
+</Project>

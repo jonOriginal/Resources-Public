@@ -1,0 +1,9 @@
+{
+  "TemplatePath": null,
+  "ContainerSettings": {
+    "Registry": "sbdcontainers.azurecr.io",
+    "Builder": "docker",
+    "BuildArgs": null,
+    "Context": null
+  }
+}

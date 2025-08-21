@@ -1,0 +1,227 @@
+﻿@page "/"
+@using Backend.Api
+@using Backend.Api.Services
+@inject ModService Service
+@inject IFrontendConfig Config
+@rendermode InteractiveServer
+
+<PageTitle>Mods and Resources</PageTitle>
+
+<HeadContent>
+    <meta name="description"
+          content="Discover and download mods and resources for Skyblock. Join our community on Discord for support and updates."/>
+    <meta content="Skyblocked Resources" property="og:title"/>
+    <meta
+        content="Discover and download mods and resources for Skyblock. Join our community on Discord for support and updates."
+        property="og:description"/>
+    <meta content="https://www.skyblocked.org" property="og:url"/>
+    <meta content="https://www.skyblocked.org/favicon.png" property="og:image"/>
+    <meta content="#43B581" data-react-helmet="true" name="theme-color"/>
+</HeadContent>
+
+<div class="container min-vh-100 pb-4" style="font-family: 'Segoe UI', Arial, sans-serif;">
+    <header class="container-fluid py-3 g-0">
+        <div class="row align-items-center g-0 align-items-center justify-content-between">
+            <div class="col-md-8 col-12 mb-2 mb-md-0">
+                <h4 class="text-light text-nowrap mb-1">Skyblock Mods and Resources</h4>
+                <h6 class="text-light-emphasis fst-italic text-nowrap mb-0">by Skyblocked</h6>
+            </div>
+            <div class="col-md-auto col-sm-12 text-md-end">
+                <a class="btn text-white text-decoration-none text-nowrap w-100 w-md-auto"
+                   href="@Config.DiscordInviteLink"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   style="border-radius: 10px; padding: 0.5em 1em; background: linear-gradient(135deg, #1d3557, #8289e2);">
+                    <i class="bi bi-discord"></i>
+                    Join Discord
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div>
+        <form class="row g-3 align-items-center" @onsubmit="SearchResources">
+            <div class="col-md-10">
+                <input type="text" @bind="SearchQuery" class="text-light form-control bg-dark dark-control"
+                       style="border-radius: 12px !important; border-color: #5c636a !important;"
+                       placeholder="Search for resources..."/>
+            </div>
+            <div class="col-md-2">
+                <button class="btn text-white w-100"
+                        type="submit"
+                        style="border-radius: 10px; padding: 0.5em 1em; background: linear-gradient(135deg, #003333, #00bfe6);">
+                    <i class="bi bi-search"></i>
+                    Search
+                </button>
+            </div>
+            <div class="col-md-12 my-3">
+                <div class="d-flex flex-wrap gap-2">
+                    @if (_tags != null)
+                    {
+                        @foreach (var tag in _tags.Values)
+                        {
+                            <button type="button"
+                                    class="btn @(GetButtonClass(tag.Id)) text-light"
+                                    style="border-radius: 20px; padding: 0.4em 0.7em;"
+                                    @onclick="() => ToggleTag(tag.Id)">
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="rounded-circle"
+                                         style="width: 10px; height: 10px; background-color: @tag.ColorHex;">
+                                    </div>
+                                    @tag.Name
+                                </div>
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+    @if (_mods == null)
+    {
+        <p class="text-center text-muted">Loading resources...</p>
+    }
+    else if (!_mods.Any())
+    {
+        <p class="text-center text-warning">No resources found.</p>
+    }
+    else
+    {
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
+            @foreach (var mod in _mods)
+            {
+                <div class="col">
+                    <div class="card bg-dark text-light h-100 shadow-lg border border-1"
+                         style="border-radius: 12px; border-color: #5c636a !important;">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center mb-3">
+                                @if (!string.IsNullOrEmpty(mod.IconUrl))
+                                {
+                                    <img src="@mod.IconUrl" class="rounded-circle border border-secondary me-3"
+                                         alt="Mod Icon"
+                                         style="width: 50px; height: 50px; object-fit: cover;">
+                                }
+                                else
+                                {
+                                    <div
+                                        class="rounded-circle bg-secondary d-flex align-items-center justify-content-center me-3"
+                                        style="width: 50px; height: 50px;">
+                                        <i class="bi bi-box-seam text-white fs-3"></i>
+                                    </div>
+                                }
+                                <div>
+                                    <h5 class="mb-0" style="color: #d1d8e0;">@mod.Name</h5>
+                                    <small>by @mod.Author</small>
+                                </div>
+                            </div>
+
+                            <p class="flex-grow-1"
+                               style="font-size: 0.95rem;">
+                                @(!string.IsNullOrEmpty(mod.Description) ? mod.Description.Substring(0, Math.Min(mod.Description.Length, 450)) + (mod.Description.Length > 450 ? "..." : "") : "No description available.")
+                            </p>
+
+                            @if (mod.TagIds != null && mod.TagIds.Any() && _tags != null)
+                            {
+                                <div class="mt-3 d-flex flex-wrap gap-2">
+                                    @foreach (var id in mod.TagIds)
+                                    {
+                                        if (_tags.TryGetValue(id, out var tag))
+                                        {
+                                            <span class="badge badge-pill text-dark"
+                                                  style="background-color: @tag.ColorHex; font-weight: 500; padding: 0.4em 0.7em;">@tag.Name</span>
+                                        }
+                                    }
+                                </div>
+                            }
+
+                            <div class="mt-3 d-flex justify-content-between">
+                                @if (!string.IsNullOrEmpty(mod.WebsiteUrl))
+                                {
+                                    <div class="mt-2">
+                                        <a class="btn text-white text-decoration-none"
+                                           style="border-radius: 10px; padding: 0.5em 1em; background: linear-gradient(135deg, #1d3557, #457b9d);"
+                                           href="@mod.WebsiteUrl" target="_blank" rel="noopener noreferrer">
+                                            <i class="bi bi-globe"></i>
+                                            Website
+                                        </a>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrEmpty(mod.DiscordUrl))
+                                {
+                                    <div class="mt-2">
+                                        <a class="btn text-white text-decoration-none"
+                                           style="border-radius: 10px; padding: 0.5em 1em; background: linear-gradient(135deg, #1d3557, #457b9d);"
+                                           href="@mod.DiscordUrl" target="_blank" rel="noopener noreferrer">
+                                            Discord
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private ICollection<Mod>? _mods;
+    private IDictionary<string, ModTag>? _tags;
+
+    private string SearchQuery { get; set; } = string.Empty;
+    private HashSet<string> SelectedTagIds { get; } = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadResources();
+    }
+
+    private async Task LoadResources()
+    {
+        try
+        {
+            _mods = await Service.GetMods();
+            _tags = await Service.GetModTagsDictionary();
+        }
+        catch (Exception e)
+        {
+            await Console.Error.WriteLineAsync($"Error fetching resources: {e.Message}");
+            _mods = new List<Mod>();
+        }
+        finally
+        {
+            StateHasChanged();
+        }
+    }
+
+    private async Task SearchResources()
+    {
+        if (string.IsNullOrWhiteSpace(SearchQuery) && !SelectedTagIds.Any())
+        {
+            _mods = await Service.GetMods();
+        }
+        else
+        {
+            _mods = await Service.SearchMods(SearchQuery, SelectedTagIds.ToArray());
+        }
+
+        StateHasChanged();
+    }
+
+    private void ToggleTag(string tagId)
+    {
+        if (!SelectedTagIds.Add(tagId))
+        {
+            SelectedTagIds.Remove(tagId);
+        }
+
+        StateHasChanged();
+    }
+
+    private string GetButtonClass(string tagId)
+    {
+        return SelectedTagIds.Contains(tagId) ? "btn-dark" : "btn-outline-dark";
+    }
+
+}

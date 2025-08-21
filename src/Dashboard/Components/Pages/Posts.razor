@@ -1,0 +1,127 @@
+﻿@page "/Posts"
+@using Backend.Api
+@using Backend.Api.Services
+
+@rendermode InteractiveServer
+@inject PostService Service
+
+<AuthWrapper>
+    <div class="container-fluid bg-black">
+        <div class="row vh-100">
+            <div class="col-md-6 p-4 overflow-auto">
+                <h3 class="text-light">Post Mappings</h3>
+                <div class="card-body">
+                    @if (_posts == null)
+                    {
+                        <div class="alert alert-info">
+                            Loading posts...
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var named in _posts)
+                                    {
+                                        <tr>
+                                            <td>@named.ModId</td>
+                                            <td>@named.ModName</td>
+                                            <td>
+                                                @if (named.PostId != null)
+                                                {
+                                                    <span class="badge bg-success">Created</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Out-of-sync</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info" @onclick="() => SyncMod(named.ModId)">
+                                                    Force Sync
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-6 p-4 overflow-auto border-start">
+                <h3 class="text-light">Tag Mappings</h3>
+                <div class="card-body">
+                    @if (_tags == null)
+                    {
+                        <div class="alert alert-info">
+                            Loading tags...
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-dark table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach (var tag in _tags)
+                                {
+                                    <tr>
+                                        <td>@tag.ModTagId</td>
+                                        <td>@tag.TagName</td>
+                                        <td>
+                                            @if (tag.PostTagId != null)
+                                            {
+                                                <span class="badge bg-success">Created</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-secondary">Out-of-sync</span>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</AuthWrapper>
+
+@code {
+
+    private ICollection<NamedPost>? _posts;
+
+    private ICollection<NamedPostTag>? _tags;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _posts = await Service.GetNamedPosts();
+        _tags = await Service.GetNamedTags();
+    }
+
+    private async Task SyncMod(string modId)
+    {
+        await Service.Sync(modId);
+    }
+
+}
+

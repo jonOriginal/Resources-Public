@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-Bot-3d769943-82e4-45a0-a83a-40d8affa5e1b</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Aspire.StackExchange.Redis" Version="9.3.1"/>
+        <PackageReference Include="Aspire.StackExchange.Redis.DistributedCaching" Version="9.3.1"/>
+        <PackageReference Include="Config.Net" Version="5.2.1"/>
+        <PackageReference Include="Discord.Net" Version="3.17.4"/>
+        <PackageReference Include="FluentResults" Version="4.0.0"/>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.6"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Analysers.Attributes\Analysers.Attributes.csproj"/>
+        <ProjectReference Include="..\Backend.Event\Backend.Event.csproj"/>
+        <ProjectReference Include="..\Common\Common.csproj"/>
+        <ProjectReference Include="..\Analysers\Analysers\Analysers.csproj">
+            <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+            <OutputItemType>Analyzer</OutputItemType>
+        </ProjectReference>
+        <ProjectReference Include="..\Backend.Api\Backend.Api.csproj"/>
+        <ProjectReference Include="..\ServiceDefaults\ServiceDefaults.csproj"/>
+    </ItemGroup>
+</Project>

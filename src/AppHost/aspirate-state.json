@@ -1,0 +1,95 @@
+{
+  "projectPath": ".",
+  "inputPath": "aspirate-output",
+  "outputPath": "aspirate-output",
+  "allowClearNamespace": true,
+  "containerRegistry": "sbdcontainers.azurecr.io",
+  "containerImageTags": [
+    "latest"
+  ],
+  "runtimeIdentifier": "linux-amd64",
+  "imagePullPolicy": "Always",
+  "containerBuilder": "docker",
+  "kubeContext": "kubernetes-admin@kubernetes",
+  "outputFormat": "kustomize",
+  "skipFinalKustomizeGeneration": false,
+  "privateRegistryUrl": "sbdcontainers.azurecr.io",
+  "privateRegistryUsername": "k8s-token",
+  "privateRegistryEmail": "aspir8@aka.ms",
+  "withPrivateRegistry": true,
+  "rollingRestart": true,
+  "includeDashboard": true,
+  "useCustomNamespace": false,
+  "secrets": {
+    "salt": "QQzZUI/VnFo0Jmid",
+    "hash": "29ckrr\u002BsEv\u002BIDgNA39P8ZnqYf7cqYMRPrG3oibPWFYE=",
+    "secrets": {
+      "redis-password": {
+        "value": "QQzZUI/VnFo0JmidIoekGiDa8tKOVwpatqz1AJ0ukoCgYv9sgN5ajMZGucCiRDCvxPI="
+      },
+      "cosmos-connection-string": {
+        "value": "QQzZUI/VnFo0JmidMkkzR06QKAuc8mfZYXO5Brc0wqSPa7xlpNJ/uuEYmc2lQi218rzsm1VJ8JEvRU4KkOuTL2BBqlnvbQpaaOWzFTJnC2gO6DpN7Yms3RvR9JmPSYwZK7UPQ8mAKN\u002BB20/YGqh4SgogdEh2Ub1vWRT17LCHKijPY3pwv8pp4QHxeJlRhJsUP7U55t0GQosXXKi3qPOWA75sB1wm12ooIWiAmRIqL80iOL2yuohqWomVssc="
+      },
+      "cosmos-database-name": {
+        "value": "QQzZUI/VnFo0Jmid8r8pdPNsnSYSkUfTMzlv/oU82KmWaqtLr9IipfoZiQ=="
+      },
+      "cosmos-container-name": {
+        "value": "QQzZUI/VnFo0JmidZMhDluu9mpI7CK1wDYlZIJU4z7/L"
+      },
+      "redis": {},
+      "gateway": {
+        "ConnectionStrings__redis": "QQzZUI/VnFo0JmidpUilUlKerVPMdKIMC5no44QyxaKJP/4T/Y8jpekFnoeiRD346v/w/3xFvr8JQng4u7/pe2BQtl7Pdw==",
+        "CONNECTIONSTRING": "QQzZUI/VnFo0JmidMkkzR06QKAuc8mfZYXO5Brc0wqSPa7xlpNJ/uuEYmc2lQi218rzsm1VJ8JEvRU4KkOuTL2BBqlnvbQpaaOWzFTJnC2gO6DpN7Yms3RvR9JmPSYwZK7UPQ8mAKN\u002BB20/YGqh4SgogdEh2Ub1vWRT17LCHKijPY3pwv8pp4QHxeJlRhJsUP7U55t0GQosXXKi3qPOWA75sB1wm12ooIWiAmRIqL80iOL2yuohqWomVssc="
+      },
+      "frontend": {
+        "ConnectionStrings__redis": "QQzZUI/VnFo0JmidpUilUlKerVPMdKIMC5no44QyxaKJP/4T/Y8jpekFnoeiRD346v/w/3xFvr8JQng4u7/pe2BQtl7Pdw=="
+      },
+      "dashboard": {
+        "ConnectionStrings__redis": "QQzZUI/VnFo0JmidpUilUlKerVPMdKIMC5no44QyxaKJP/4T/Y8jpekFnoeiRD346v/w/3xFvr8JQng4u7/pe2BQtl7Pdw=="
+      },
+      "cloudflare-tunnel-token": {
+        "value": "QQzZUI/VnFo0JmidL1vGZxSdDJZGlEnGs2kjQZMu66Ozb6dJk9tZvsYihsSDXBev2OyGhmhYyMMMfWsJuNjsf0J2nVnTVCteCLaAFw1vcGItxkpJkNDsjxfmzZ\u002B1c6ljAJhncfSNIOv\u002BzzqJNZ5fY3M0Vm9AR7pwUwLmvqGACCDlJRhgwNpI7xrqbMIGzrV3T7tr2/Axa5cycYivmd/yaJQSJgMf9BgKGWuyuD01Mc8AF6ebjadFVprt48wbv8LubAZTNptazTOco1dTuMsHEpQJyHg="
+      },
+      "cloudflare": {},
+      "cloudflare2": {},
+      "cloudflare-tunnel-id": {
+        "value": "QQzZUI/VnFo0Jmidj5jwYH9oC7JJIp9VUKhFqMdhw/LOMP0V59M85b9b2cCsB3Sn57\u002BgmRNHvJIgSB4Hl7eELw=="
+      },
+      "discord-app-id": {
+        "value": "QQzZUI/VnFo0JmidrlHYBLiYlCcPjBup3ey4AcdkmPnNNvET\u002BI467bhF1cb1BW4="
+      },
+      "discord-app-secret": {
+        "value": "QQzZUI/VnFo0JmidFI/vyFOkiNJviipaytGrHrphkv\u002BUNr1Pu8R6odhAoIf6Xzv9w9eL1nUR7aszB1gv"
+      },
+      "discord-role-id": {
+        "value": "QQzZUI/VnFo0JmidRrbxUJa77jJv9B4tg9hgMcdkmPnONfwZ/Y894b9G1MH6B2s="
+      },
+      "discord-guild-id": {
+        "value": "QQzZUI/VnFo0JmidViq0EpgK5WywVF2xzZtalcdkmPnONfwZ/Y8\u002B4r1A2Mf4AWs="
+      },
+      "discord-invite-url": {
+        "value": "QQzZUI/VnFo0Jmid3vfLGxtR4EdGsbdFo02ubZ4j1buJP\u002BcPrt98tucEid6qUXan0bKo9hF1\u002BMAO"
+      },
+      "discord-bot-token": {
+        "value": "QQzZUI/VnFo0JmidwBq1HxHt9E/pLdiNa56/27sD7P63b6taheJCrMcyuMSAchTxz\u002BykzmhVp7QmQGs\u002BuaH8Bz5m6W3sdCkedciMBQlWVEQ44mcwo/zUjgz70KyLCpwgJ5lcag=="
+      },
+      "discord-mod-forum-channel-id": {
+        "value": "QQzZUI/VnFo0JmidHT858Astv/6W15wjTPYal8dkmPnNNvEU8o865btE2ML4A2k="
+      },
+      "discord-notification-channel-id": {
+        "value": "QQzZUI/VnFo0JmidNmY3OmocLlodInwtOiwSesdkmPnNNvEW/oQ65b9F1Mn8AWE="
+      },
+      "backend": {
+        "ConnectionStrings__redis": "QQzZUI/VnFo0JmidpUilUlKerVPMdKIMC5no44QyxaKJP/4T/Y8jpekFnoeiRD346v/w/3xFvr8JQng4u7/pe2BQtl7Pdw=="
+      },
+      "bot": {
+        "ConnectionStrings__redis": "QQzZUI/VnFo0JmidpUilUlKerVPMdKIMC5no44QyxaKJP/4T/Y8jpekFnoeiRD346v/w/3xFvr8JQng4u7/pe2BQtl7Pdw=="
+      },
+      "discord-update-channel-id": {
+        "value": "QQzZUI/VnFo0JmidzvoZ3tW4tXt0jBvK17KbjcdkmPjONPgS\u002BIE\u002B4rpE2sj/Dms="
+      }
+    }
+  },
+  "processAllComponents": true,
+  "isRunning": true
+}
